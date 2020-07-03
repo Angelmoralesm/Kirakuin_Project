@@ -4,6 +4,9 @@
 #include "nodo.h"
 #include <stdlib.h>
 #include "funciones.h"
+#define ENTER 10
+#define MAXIMO 99999999
+#define MINIMO 11111111
 
 typedef struct level level;
 
@@ -41,7 +44,9 @@ typedef struct enemigo{
 
 }enemigo;
 
-void menu_principal(){
+
+int menu_principal(){
+    int key;
     
     noecho();
     cbreak();
@@ -50,39 +55,49 @@ void menu_principal(){
     getmaxyx(stdscr, yMax , xMax);
 
     WINDOW * menuwin = newwin(6, xMax-12,yMax-8, 5);
+    WINDOW * submen = subwin(menuwin,1,1,1,1);
     box(menuwin,0,0);
     refresh();
     wrefresh(menuwin);
 
     keypad(menuwin,true);
     
-    
-    echo();
 
     if (has_colors()){
         
         int beep(void);
+        
         start_color();
         init_pair(1,COLOR_WHITE,COLOR_GREEN);
         init_pair(2,COLOR_WHITE,COLOR_BLUE);
         attron(COLOR_PAIR(1));
-        wmove(menuwin,18,10);
-        printw("Nueva partida");
-        wmove(menuwin,19,10);
-        printw("Cargar Partida");
-        wmove(menuwin,20,10);
-        printw("Ingresar Cheats");
+        wmove(menuwin,1,1);
+        wprintw(menuwin,"Nueva partida");
+        wmove(menuwin,2,1);
+        wprintw(menuwin,"Cargar Partida");
+        wmove(menuwin,3,1);
+        wprintw(menuwin,"Ingresar cheats");
+        
         attroff(COLOR_PAIR(1));
+        wrefresh(menuwin);
         
-        char cadena[128];
-        scanw("%s",&cadena);
+        do{
+        	key = wgetch(menuwin);
+        	wrefresh(menuwin);
+        	if(key == KEY_UP){
+        		wprintw(menuwin,"arriba");
+        	}
+        	
+        	if(key == KEY_DOWN){
+        		wprintw(menuwin,"abajo");
+        	}
+        	
+        }while(key != ENTER);
         
-	printw("Has elegido %s\n",cadena);
 	refresh();
     }
 
-
-    getch();
+    return 0;
 
 }
 
@@ -90,25 +105,21 @@ void menu_principal(){
 int main(int argc, char ** argv){
     initscr();
     
-    menu_principal();
+    int option=menu_principal();
     
-    clear();
+    bkgd(COLOR_PAIR(1));
     
-    refresh();
-    int flash(void);
+    if(option=0);{
     
-   napms (2000) ;
-   flash();
-   napms (2000) ;
-   flash();
-   napms (2000) ;
-   flash();
+    	printw("xd");
+    }
+    
+   napms(2000) ;
    
    refresh();
-    
-    menu_principal();
-
-    endwin();
+   getch();
+   
+   endwin();
 
     return 0;
 
