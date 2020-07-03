@@ -1,0 +1,7 @@
+echo();
+char cadena[128];
+
+printw("Dime tu nombre\n");
+scanw("%s",cadena);
+printw("Te llamas: %s\n",cadena);
+refresh();
